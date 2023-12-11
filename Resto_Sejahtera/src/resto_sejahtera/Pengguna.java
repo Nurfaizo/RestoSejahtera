@@ -9,5 +9,7 @@ package resto_sejahtera;
  * @author Faiz
  */
 public class Pengguna {
-    
+    protected int ID;
+    protected String nama;
+    protected String alamat;
 }
