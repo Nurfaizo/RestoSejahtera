@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="525.0" prefWidth="1000.0" style="-fx-background-color: #fcf2d6;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="resto_sejahtera.HomePagePelangganController">
+   <children>
+      <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="364.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/LogoRestoranSejahtera.png" />
+         </image>
+      </ImageView>
+      <HBox alignment="CENTER" layoutX="20.0" layoutY="279.0" prefHeight="100.0" prefWidth="960.0" spacing="30.0">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #d6e0fc;" text="Buat Pesanan">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+               <effect>
+                  <DropShadow blurType="ONE_PASS_BOX" />
+               </effect>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #d6e0fc;" text="Lihat Menu">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+               <effect>
+                  <DropShadow blurType="ONE_PASS_BOX" />
+               </effect>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
