@@ -11,30 +11,38 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class HomePagePelangganController {
+public class LihatMenuController{
+
+    @FXML
+    private Button btHome;
 
     @FXML
     private Button btMenu;
 
     @FXML
-    private Button btPesanan;
+    private Button btPesan;
 
     @FXML
-    void BuatPesanan(ActionEvent event) {
+    void kePesan(ActionEvent event) {
 
     }
 
     @FXML
-    void LihatMenu(ActionEvent event) {
-         try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("LihatMenu.fxml"));
+    void keRumah(ActionEvent event) {
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("HomePagePelanggan.fxml"));
         Parent root = loader.load();
-        Stage stage = (Stage) btMenu.getScene().getWindow();
+        Stage stage = (Stage) btHome.getScene().getWindow();
         stage.setScene(new Scene(root));
         } catch (IOException e) {
-        Logger.getLogger(HomePagePelangganController.class.getName()).log(Level.SEVERE, null, e);
-        System.out.println("Failed to load " + "LihatMenu.fxml");
+        Logger.getLogger(LihatMenuController.class.getName()).log(Level.SEVERE, null, e);
+        System.out.println("Failed to load " + "HomePagePelanggan.fxml");
         }
+    }
+
+    @FXML
+    void menu(ActionEvent event) {
+
     }
 
 }
