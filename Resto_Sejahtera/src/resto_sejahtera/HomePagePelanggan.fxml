@@ -17,7 +17,7 @@
       </ImageView>
       <HBox alignment="CENTER" layoutX="20.0" layoutY="279.0" prefHeight="100.0" prefWidth="960.0" spacing="30.0">
          <children>
-            <Button fx:id="btPesanan" mnemonicParsing="false" onAction="#BuatPesanan" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #d6e0fc;" text="Buat Pesanan">
+            <Button fx:id="btPesanan" mnemonicParsing="false" onAction="#BuatPesanan" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #d6fcf2;" text="Buat Pesanan">
                <font>
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
@@ -25,7 +25,7 @@
                   <DropShadow blurType="ONE_PASS_BOX" />
                </effect>
             </Button>
-            <Button fx:id="btMenu" mnemonicParsing="false" onAction="#LihatMenu" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #d6e0fc;" text="Lihat Menu">
+            <Button fx:id="btMenu" mnemonicParsing="false" onAction="#LihatMenu" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #d6fcf2;" text="Lihat Menu">
                <font>
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
