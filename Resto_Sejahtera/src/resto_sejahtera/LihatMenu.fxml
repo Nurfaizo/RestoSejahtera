@@ -33,7 +33,7 @@
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
             </Button>
-            <Button fx:id="btMenu" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#menu" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #d6e0fc;" text="Lihat Menu">
+            <Button fx:id="btMenu" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#menu" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #d6fcf2;" text="Lihat Menu">
                <font>
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
