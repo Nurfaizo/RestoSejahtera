@@ -29,6 +29,9 @@ public class LoginController {
     private Button btLogin;
     
     @FXML
+    private Button btSignUp;
+    
+    @FXML
     private Label lgnMsgLabel;
 
     @FXML
@@ -55,46 +58,49 @@ public class LoginController {
         }
     }
     
+    @FXML
+    void SignUp(ActionEvent event) {
+        
+    }
+    
     public void isValidLogin() {
-    String sqlPelanggan = "SELECT 'pelanggan' as source FROM pelanggan WHERE user_name = ? AND PASSWORD = ?";
-    String sqlPegawai = "SELECT 'pegawai' as source FROM pegawai WHERE user_name = ? AND PASSWORD = ?";
+        String sqlPelanggan = "SELECT 'pelanggan' as source FROM pelanggan WHERE user_name = ? AND PASSWORD = ?";
+        String sqlPegawai = "SELECT 'pegawai' as source FROM pegawai WHERE user_name = ? AND PASSWORD = ?";
 
-    try (Connection conn = DBHelper.getConnection();
-         PreparedStatement pstmtPelanggan = conn.prepareStatement(sqlPelanggan);
-         PreparedStatement pstmtPegawai = conn.prepareStatement(sqlPegawai)) {
+        try (Connection conn = DBHelper.getConnection();
+             PreparedStatement pstmtPelanggan = conn.prepareStatement(sqlPelanggan);
+             PreparedStatement pstmtPegawai = conn.prepareStatement(sqlPegawai)) {
 
-        pstmtPelanggan.setString(1, tfUsename.getText());
-        pstmtPelanggan.setString(2, pfPassword.getText());
-        ResultSet rsPelanggan = pstmtPelanggan.executeQuery();
+            pstmtPelanggan.setString(1, tfUsename.getText());
+            pstmtPelanggan.setString(2, pfPassword.getText());
+            ResultSet rsPelanggan = pstmtPelanggan.executeQuery();
 
-        pstmtPegawai.setString(1, tfUsename.getText());
-        pstmtPegawai.setString(2, pfPassword.getText());
-        ResultSet rsPegawai = pstmtPegawai.executeQuery();
+            pstmtPegawai.setString(1, tfUsename.getText());
+            pstmtPegawai.setString(2, pfPassword.getText());
+            ResultSet rsPegawai = pstmtPegawai.executeQuery();
 
-        if (rsPelanggan.next()) {
-            loadFXML("HomePagePelanggan.fxml");
-        } else if (rsPegawai.next()) {
-            loadFXML("LihatMenu.fxml");
-        } else {
-            lgnMsgLabel.setText("Invalid credentials");
+            if (rsPelanggan.next()) {
+                loadFXML("HomePagePelanggan.fxml");
+            } else if (rsPegawai.next()) {
+                loadFXML("LihatMenu.fxml");
+            } else {
+                lgnMsgLabel.setText("Invalid credentials");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, e);
+            lgnMsgLabel.setText("You Try to Login");
         }
-    } catch (SQLException e) {
-        Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, e);
-        lgnMsgLabel.setText("You Try to Login");
     }
-}
 
-private void loadFXML(String fxmlFile) {
-    try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-        Parent root = loader.load();
-        Stage stage = (Stage) btLogin.getScene().getWindow();
-        stage.setScene(new Scene(root));
-    } catch (IOException e) {
-        Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, e);
-        System.out.println("Failed to load " + fxmlFile);
+    private void loadFXML(String fxmlFile) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            Parent root = loader.load();
+            Stage stage = (Stage) btLogin.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("Failed to load " + fxmlFile);
+        }
     }
-}
-
-
 }
