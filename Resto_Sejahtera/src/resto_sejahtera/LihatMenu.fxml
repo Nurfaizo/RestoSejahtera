@@ -33,7 +33,7 @@
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
             </Button>
-            <Button fx:id="btMenu" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#menu" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #d6fcf2;" text="Lihat Menu">
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #d6fcf2;" text="Lihat Menu">
                <font>
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
@@ -53,11 +53,12 @@
                         </Label>
                      </children>
                   </Pane>
-                  <TableView prefHeight="525.0" prefWidth="750.0" style="-fx-background-color: #fcf2d6;">
+                  <TableView fx:id="tvMenu" prefHeight="525.0" prefWidth="750.0" style="-fx-background-color: #fcf2d6;">
                     <columns>
-                      <TableColumn prefWidth="200.0" text="Nama" />
-                      <TableColumn prefWidth="400.0" text="Deskripsi" />
-                        <TableColumn prefWidth="150.0" text="Harga" />
+                        <TableColumn fx:id="colID" prefWidth="75.0" text="ID" />
+                      <TableColumn fx:id="colNama" prefWidth="200.0" text="Nama" />
+                      <TableColumn fx:id="colDeskripsi" prefWidth="325.0" text="Deskripsi" />
+                        <TableColumn fx:id="colHarga" prefWidth="150.0" text="Harga" />
                     </columns>
                   </TableView>
                </children>
