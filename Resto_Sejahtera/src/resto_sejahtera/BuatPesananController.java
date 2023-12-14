@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,44 +20,82 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-public class LihatMenuController implements Initializable{
+public class BuatPesananController implements Initializable{
+
+    @FXML
+    private TableColumn<?, ?> Harga;
+
+    @FXML
+    private Button btBayar;
 
     @FXML
     private Button btHome;
 
     @FXML
-    private Button btPesan;
+    private Button btMenu;
+
+    @FXML
+    private Button btTambah;
 
     @FXML
     private TableColumn<Produk, String> colDeskripsi;
 
-    @FXML
+     @FXML
     private TableColumn<Produk, Integer> colHarga;
 
+    @FXML
+    private TableColumn<?, ?> colKuantitas;
+
+    @FXML
+    private TableColumn<Produk, String> colNama;
+    
     @FXML
     private TableColumn<Produk, Integer> colID;
 
     @FXML
-    private TableColumn<Produk, String> colNama;
+    private TableColumn<?, ?> colNama1;
+    
+    @FXML
+    private ChoiceBox<Integer> cbID;
+
+    @FXML
+    private TextField tfKuantitas;
 
     @FXML
     private TableView<Produk> tvMenu;
 
     @FXML
-    void kePesan(ActionEvent event) {
+    private TableView<?> tvMenu1;
+    
+    ArrayList<Integer> id = new ArrayList<>();
+    
+    @FXML
+    void Pembayaran(ActionEvent event) {
+
+    }
+
+    @FXML
+    void insertKeranjang(ActionEvent event) {
+
+    }
+
+    @FXML
+    void keMenu(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("BuatPesanan.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("LihatMenu.fxml"));
             Parent root = loader.load();
             
-            Stage stage = (Stage) btPesan.getScene().getWindow();
+            Stage stage = (Stage) btMenu.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
-            Logger.getLogger(LihatMenuController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(BuatPesananController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -69,13 +108,14 @@ public class LihatMenuController implements Initializable{
             Stage stage = (Stage) btHome.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
-            Logger.getLogger(LihatMenuController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(BuatPesananController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showMenu();
+        cbID.getItems().addAll(id);
     }
     
     public ObservableList<Produk> getDataProduk() {
@@ -93,6 +133,7 @@ public class LihatMenuController implements Initializable{
                 while(rs.next()) {
                     temp = new Produk(rs.getInt("id_product"), rs.getString("nama_product"), rs.getString("description"), rs.getInt("harga"));
                     produk.add(temp);
+                    id.add(temp.getId_product());
                 }
 
         } catch (SQLException ex) {
@@ -113,3 +154,5 @@ public class LihatMenuController implements Initializable{
         tvMenu.setItems(list);
     }
 }
+
+
