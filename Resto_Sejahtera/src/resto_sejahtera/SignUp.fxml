@@ -14,8 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="525.0" prefWidth="1000.0" style="-fx-background-color: #fcf2d6;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="resto_sejahtera.SignUpController">
+<AnchorPane id="AnchorPane" prefHeight="525.0" prefWidth="1000.0" style="-fx-background-color: #fcf2d6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="resto_sejahtera.SignUpController">
    <children>
       <Pane prefHeight="525.0" prefWidth="500.0">
          <children>
@@ -31,7 +30,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="200.0">
                <children>
                   <Pane prefHeight="200.0" prefWidth="10.0" />
-                  <Button mnemonicParsing="false" style="-fx-background-color: transparant;">
+                  <Button fx:id="btBack" mnemonicParsing="false" onAction="#gotoLogin" style="-fx-background-color: transparant;">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -50,37 +49,37 @@
             </HBox>
             <Pane prefHeight="450.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="20.0" layoutY="20.0" text="Nama Lengkap">
+                  <Label layoutX="20.0" text="Nama Lengkap">
                      <font>
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfUsename" layoutX="20.0" layoutY="45.0" prefHeight="35.0" prefWidth="460.0" promptText="Nama" style="-fx-border-color: #d6fcf2; -fx-background-color: transparant; -fx-border-width: 0px 0px 2px 0px;" />
-                  <Label layoutX="20.0" layoutY="90.0" text="Alamat">
+                  <TextField fx:id="tfNama" layoutX="20.0" layoutY="25.0" prefHeight="35.0" prefWidth="460.0" promptText="Nama" style="-fx-border-color: #d6fcf2; -fx-background-color: transparant; -fx-border-width: 0px 0px 2px 0px;" />
+                  <Label layoutX="20.0" layoutY="70.0" text="Alamat">
                      <font>
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfUsename1" layoutX="20.0" layoutY="115.0" prefHeight="35.0" prefWidth="460.0" promptText="Alamat" style="-fx-border-color: #d6fcf2; -fx-background-color: transparant; -fx-border-width: 0px 0px 2px 0px;" />
-                  <Label layoutX="20.0" layoutY="160.0" text="Metode Pembayaran">
+                  <TextField fx:id="tfAlamat" layoutX="20.0" layoutY="95.0" prefHeight="35.0" prefWidth="460.0" promptText="Alamat" style="-fx-border-color: #d6fcf2; -fx-background-color: transparant; -fx-border-width: 0px 0px 2px 0px;" />
+                  <Label layoutX="20.0" layoutY="140.0" text="Metode Pembayaran">
                      <font>
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                   </Label>
-                  <ChoiceBox layoutX="20.0" layoutY="185.0" prefHeight="35.0" prefWidth="460.0" style="-fx-border-color: #d6fcf2; -fx-background-color: transparant; -fx-border-width: 2px 2px 2px 2px;" />
-                  <Label layoutX="20.0" layoutY="230.0" text="Username">
+                  <ChoiceBox fx:id="cbMetode" layoutX="20.0" layoutY="165.0" prefHeight="35.0" prefWidth="460.0" style="-fx-border-color: #d6fcf2; -fx-background-color: transparant; -fx-border-width: 2px 2px 2px 2px;" />
+                  <Label layoutX="20.0" layoutY="210.0" text="Username">
                      <font>
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfUsename11" layoutX="20.0" layoutY="255.0" prefHeight="35.0" prefWidth="460.0" promptText="Username" style="-fx-border-color: #d6fcf2; -fx-background-color: transparant; -fx-border-width: 0px 0px 2px 0px;" />
-                  <Label layoutX="20.0" layoutY="300.0" text="Password">
+                  <TextField fx:id="tfUsername" layoutX="20.0" layoutY="235.0" prefHeight="35.0" prefWidth="460.0" promptText="Username" style="-fx-border-color: #d6fcf2; -fx-background-color: transparant; -fx-border-width: 0px 0px 2px 0px;" />
+                  <Label layoutX="20.0" layoutY="280.0" text="Password">
                      <font>
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                   </Label>
-                  <PasswordField fx:id="pfPassword" layoutX="20.0" layoutY="325.0" prefHeight="35.0" prefWidth="460.0" promptText="Password" style="-fx-border-color: #d6fcf2; -fx-background-color: transparant; -fx-border-width: 0px 0px 2px 0px;" />
-                  <Button fx:id="btLogin" layoutX="166.0" layoutY="380.0" mnemonicParsing="false" onAction="#Login" prefHeight="50.0" prefWidth="169.0" style="-fx-background-color: #d6fcf2;" text="SIGN UP">
+                  <PasswordField fx:id="pfPassword" layoutX="20.0" layoutY="305.0" prefHeight="35.0" prefWidth="460.0" promptText="Password" style="-fx-border-color: #d6fcf2; -fx-background-color: transparant; -fx-border-width: 0px 0px 2px 0px;" />
+                  <Button fx:id="btSignUp" layoutX="166.0" layoutY="380.0" mnemonicParsing="false" onAction="#gotoLogin" prefHeight="50.0" prefWidth="169.0" style="-fx-background-color: #d6fcf2;" text="SIGN UP">
                      <font>
                         <Font name="Segoe UI Bold" size="17.0" />
                      </font>
@@ -88,6 +87,11 @@
                         <DropShadow blurType="ONE_PASS_BOX" />
                      </effect>
                   </Button>
+                  <Label fx:id="lbAllert" alignment="CENTER" layoutX="20.0" layoutY="350.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="10.0" prefWidth="460.0" textFill="RED">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
          </children>
