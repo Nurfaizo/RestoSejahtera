@@ -35,5 +35,17 @@
             </Button>
          </children>
       </HBox>
+      <Button fx:id="btLogOut" layoutX="40.0" layoutY="445.0" mnemonicParsing="false" onAction="#gotoLogin" prefHeight="40.0" style="-fx-background-color: transparant;" text="Log Out">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Image/ExitIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Segoe UI Bold" size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
