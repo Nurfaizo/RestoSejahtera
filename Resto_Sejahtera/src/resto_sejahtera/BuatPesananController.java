@@ -1,9 +1,12 @@
 package resto_sejahtera;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import db.DBHelper;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,19 +24,26 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import static resto_sejahtera.LoginController.usename;
+
+
 
 public class BuatPesananController implements Initializable{
 
     @FXML
-    private TableColumn<?, ?> Harga;
+    private TableColumn<Order, Integer> colHargap;
 
     @FXML
     private Button btBayar;
+    
+    @FXML
+    private Button btBuat;
 
     @FXML
     private Button btHome;
@@ -51,7 +61,7 @@ public class BuatPesananController implements Initializable{
     private TableColumn<Produk, Integer> colHarga;
 
     @FXML
-    private TableColumn<?, ?> colKuantitas;
+    private TableColumn<Order, Integer> colKuantitas;
 
     @FXML
     private TableColumn<Produk, String> colNama;
@@ -60,7 +70,7 @@ public class BuatPesananController implements Initializable{
     private TableColumn<Produk, Integer> colID;
 
     @FXML
-    private TableColumn<?, ?> colNama1;
+    private TableColumn<Order, String> colNamap;
     
     @FXML
     private ChoiceBox<Integer> cbID;
@@ -72,7 +82,10 @@ public class BuatPesananController implements Initializable{
     private TableView<Produk> tvMenu;
 
     @FXML
-    private TableView<?> tvMenu1;
+    private TableView<Order> tvMenu1;
+    
+    @FXML
+    private Label warn;
     
     ArrayList<Integer> id = new ArrayList<>();
     
@@ -81,11 +94,22 @@ public class BuatPesananController implements Initializable{
 
     }
 
+    
+    //untuk batalkan pesana maka mengpaus pesanan
+    @FXML
+    void hapusPesanan(ActionEvent event) {
+        deletepemesananProduk();
+        deletepemesanan();
+        deleteOrder();
+    }
+    // untuk memasukkan barang dalam pesanan
     @FXML
     void insertKeranjang(ActionEvent event) {
-
+        insertPemesananProduct();
+        showOrder();
     }
 
+    //untuk pindah scene ke lihat menu
     @FXML
     void keMenu(ActionEvent event) {
         try {
@@ -99,6 +123,7 @@ public class BuatPesananController implements Initializable{
         }
     }
 
+    //untuk kembali ke halaman home
     @FXML
     void keRumah(ActionEvent event) {
         try {
@@ -112,12 +137,21 @@ public class BuatPesananController implements Initializable{
         }
     }
     
+    //buat tambah pesanan
+    @FXML
+    void BuatPesan(ActionEvent event) {
+        insertPesan();
+
+    }
+    
+    //untuk memunculkan menu dan mendapat data kedalam choicebox
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showMenu();
         cbID.getItems().addAll(id);
     }
     
+    //untuk mendapatkan data produk
     public ObservableList<Produk> getDataProduk() {
         ObservableList<Produk> produk = FXCollections.observableArrayList();
         Connection conn = DBHelper.getConnection();
@@ -153,6 +187,256 @@ public class BuatPesananController implements Initializable{
         
         tvMenu.setItems(list);
     }
+    
+    public ObservableList<Order> getDataOrder() {
+        ObservableList<Order> order = FXCollections.observableArrayList();
+        Connection conn = DBHelper.getConnection();
+        String query = "SELECT\n" +
+                       "    product.nama_product AS Nama_Produk,\n" +
+                       "    pemesanan_produk.Jumlah,\n" +
+                       "    SUM(product.harga * pemesanan_produk.Jumlah) AS Total_Harga\n" +
+                       "FROM pemesanan_produk\n" +
+                       "\n" +
+                       "JOIN product ON pemesanan_produk.id_product = product.id_product\n" +
+                       "WHERE pemesanan_produk.Pemesanan_ID = (SELECT MAX(pemesanan.Pemesanan_ID) FROM pemesanan)\n" +
+                       "GROUP BY product.nama_product, pemesanan_produk.Jumlah";
+        Statement st;
+        ResultSet rs;
+        
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            Order temp;
+            
+            while(rs.next()) {
+                temp = new Order(rs.getString("Nama_Produk"), rs.getInt("Jumlah"), rs.getInt("Total_Harga"));
+                order.add(temp);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return order;
+    }
+    
+    public void showOrder() {
+        ObservableList<Order> list = getDataOrder();
+        
+        colNamap.setCellValueFactory(new PropertyValueFactory<>("Nama_Produk"));
+        colKuantitas.setCellValueFactory(new PropertyValueFactory<>("Jumlah"));
+        colHargap.setCellValueFactory(new PropertyValueFactory<>("Total_Harga"));
+        
+        tvMenu1.setItems(list);
+    }
+    
+    private void  deleteOrder() {
+        ObservableList<Order> order = FXCollections.observableArrayList();
+        
+        tvMenu1.setItems(order);
+    }
+
+    private int pID;
+     public void pemesanID(int userId) {
+        String sql = "SELECT MAX(pemesanan_ID) as maxID FROM pemesanan WHERE id_pengguna = ?";
+        Connection conn = DBHelper.getConnection();
+    
+        PreparedStatement prepare;
+        ResultSet result;
+        try {
+            prepare = conn.prepareStatement(sql);
+            prepare.setInt(1, userId); // Set the user ID parameter
+            result = prepare.executeQuery();  
+        
+            if (result.next()) {
+                int maxID = result.getInt("maxID");
+                pID = maxID; // Set the pID with the maximum ID
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+  
+  private void insertPemesananProduct() {
+    String querySelectPemesan = "SELECT * FROM `pemesanan` WHERE `Pemesanan_ID` = ?";
+    String querySelectPemesananProduk = "SELECT * FROM `pemesanan_produk` WHERE `Pemesanan_ID` = ? AND `id_product` = ?";
+    String queryInsert = "INSERT INTO `pemesanan_produk`(`Pemesanan_ID`, `id_product`, `Jumlah`) VALUES (?, ?, ?)";
+    String queryUpdate = "UPDATE `pemesanan_produk` SET `Jumlah` = `Jumlah` + ? WHERE `Pemesanan_ID` = ? AND `id_product` = ?";
+
+    Connection conn = DBHelper.getConnection();
+
+    try (PreparedStatement pstSelectPemesan = conn.prepareStatement(querySelectPemesan);
+         PreparedStatement pstSelectPemesananProduk = conn.prepareStatement(querySelectPemesananProduk);
+         PreparedStatement pstInsert = conn.prepareStatement(queryInsert);
+         PreparedStatement pstUpdate = conn.prepareStatement(queryUpdate)) {
+
+        // Get the next Pemesanan_ID
+        pemesanID(getUserId());
+
+        int pemesananID = pID;
+        int idProduct = cbID.getValue();
+        int jumlah = Integer.parseInt(tfKuantitas.getText());
+
+        // Check if the pemesanan status is eligible
+        pstSelectPemesan.setInt(1, pemesananID);
+        ResultSet rsPemesan = pstSelectPemesan.executeQuery();
+
+        if (rsPemesan.next()) {
+            String status = rsPemesan.getString("Status");
+
+            if ("Complete".equals(status) || "On Delivery".equals(status)) {
+                // If the status is "Complete" or "On Delivery," skip the operation
+                warn.setText("Pesanan ini sudah tidak bisa diuabh lagi silahkan buat yang baru");
+                return;
+            }
+        }
+
+        // Check if the record already exists
+        pstSelectPemesananProduk.setInt(1, pemesananID);
+        pstSelectPemesananProduk.setInt(2, idProduct);
+        ResultSet resultSet = pstSelectPemesananProduk.executeQuery();
+
+        if (resultSet.next()) {
+            // If the record exists, update the quantity
+            pstUpdate.setInt(1, jumlah);
+            pstUpdate.setInt(2, pemesananID);
+            pstUpdate.setInt(3, idProduct);
+            pstUpdate.executeUpdate();
+        } else {
+            // If the record doesn't exist, insert a new record
+            pstInsert.setInt(1, pemesananID);
+            pstInsert.setInt(2, idProduct);
+            pstInsert.setInt(3, jumlah);
+            pstInsert.executeUpdate();
+        }
+
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
 }
 
+
+  
+public int getUserId() {
+    int userId = 0;
+    Connection conn = DBHelper.getConnection();
+    String query = "SELECT id_pengguna FROM pelanggan WHERE user_name = ?";
+    try (PreparedStatement pst = conn.prepareStatement(query)) {
+        pst.setString(1, usename);
+        ResultSet rs = pst.executeQuery();
+        if (rs.next()) {
+            userId = rs.getInt("id_pengguna");
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+    return userId;
+}
+
+public String getUsermp(){
+    String userMp="";
+    Connection conn = DBHelper.getConnection();
+    String query = "SELECT mpDisukai FROM pelanggan WHERE user_name = ?";
+        try (PreparedStatement pst= conn.prepareStatement(query);){
+            pst.setString(1, usename);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()){
+                userMp=rs.getString("mpDisukai");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BuatPesananController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return userMp;
+}
+ 
+private void insertPesan() {
+    String query = "INSERT INTO `pemesanan`(`Tanggal`, `Status`, `id_pengguna`) VALUES (?, ?, ?)";
+    Connection conn = DBHelper.getConnection();
+    PreparedStatement pst = null;
+    LocalDate today = LocalDate.now();
+    Date sqlDate = Date.valueOf(today);
+
+    try {
+        pst = conn.prepareStatement(query);
+        pst.setDate(1, sqlDate);
+        pst.setString(2, "Incompleted");
+        pst.setInt(3, getUserId());
+
+        // Execute the statement
+        pst.executeUpdate();
+    } catch (SQLException ex) {
+        Logger.getLogger(BuatPesananController.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+        // Close the PreparedStatement in a finally block
+        if (pst != null) {
+            try {
+                pst.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+private void deletepemesananProduk() {
+        String query = "DELETE  FROM pemesanan_produk WHERE Pemesanan_ID = ?";
+         Connection conn = DBHelper.getConnection();
+         PreparedStatement pst;
+         pemesanID(getUserId());
+         int pmesanID = pID;
+        try {
+            pst = conn.prepareStatement(query);
+            pst.setInt(1, pmesanID);
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(BuatPesananController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+private void deletepemesanan() {
+    String query = "DELETE FROM pemesanan WHERE Pemesanan_ID = ?";
+    Connection conn = DBHelper.getConnection();
+    PreparedStatement pst;
+    pemesanID(getUserId());
+    int pmesanID = pID;
+
+    try {
+        pst = conn.prepareStatement(query);
+        pst.setInt(1, pmesanID);
+        int rowsAffected = pst.executeUpdate();
+
+        if (rowsAffected == 0) {
+            // Display a warning since no rows were deleted (record doesn't exist)
+            warn.setText("Pemesanan tidak ditemukan");
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(BuatPesananController.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
+
+private void insertpembayaran(){
+    String query = "INSERT INTO `pembayaran`( `MetodePembayaran`, `Tanggal`, `JumlahPembayaran`, `Pemesanan_ID`) VALUES (?,?,'?','?')";
+    Connection conn = DBHelper.getConnection();
+    PreparedStatement pst;
+    pemesanID(getUserId());
+    int pemesananid= pID;
+    LocalDate today = LocalDate.now();
+    Date sqlDate = Date.valueOf(today);
+    
+        try {
+            pst=conn.prepareStatement(query);
+            pst.setString(1, getUsermp());
+            pst.setDate(2, sqlDate);
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(BuatPesananController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+}
+
+        
+}
+  
 

@@ -53,27 +53,30 @@
          <children>
             <TableView fx:id="tvMenu1" prefHeight="252.0" prefWidth="250.0" style="-fx-background-color: #d6fcf2;">
                <columns>
-                  <TableColumn fx:id="colNama1" prefWidth="88.00006103515625" text="Nama" />
+                  <TableColumn fx:id="colNamap" prefWidth="88.00006103515625" text="Nama" />
                   <TableColumn fx:id="colKuantitas" prefWidth="71.9998779296875" text="Kuantias" />
-                  <TableColumn fx:id="Harga" prefWidth="90.4000244140625" text="Harga" />
+                  <TableColumn fx:id="colHargap" prefWidth="90.4000244140625" text="Harga" />
                </columns>
             </TableView>
             <Pane prefHeight="278.0" prefWidth="250.0">
                <children>
-                  <Button fx:id="btTambah" layoutX="96.0" layoutY="180.0" mnemonicParsing="false" onAction="#insertKeranjang" style="-fx-background-color: #d6fcf2;" text="Tambah" />
-                  <TextField fx:id="tfKuantitas" layoutX="51.0" layoutY="138.0" prefHeight="25.0" prefWidth="86.0" />
-                  <Label layoutX="51.0" layoutY="43.0" text="ID_Barang">
+                  <Button fx:id="btTambah" layoutX="50.0" layoutY="224.0" mnemonicParsing="false" onAction="#insertKeranjang" style="-fx-background-color: #d6fcf2;" text="Tambah" />
+                  <TextField fx:id="tfKuantitas" layoutX="51.0" layoutY="113.0" prefHeight="25.0" prefWidth="86.0" />
+                  <Label layoutX="51.0" layoutY="18.0" text="ID_Barang">
                      <font>
                         <Font name="Segoe UI Black" size="12.0" />
                      </font>
                   </Label>
-                  <Label layoutX="51.0" layoutY="121.0" text="Kuantitas">
+                  <Label layoutX="51.0" layoutY="96.0" text="Kuantitas">
                      <font>
                         <Font name="Segoe UI Black" size="12.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btBayar" layoutX="96.0" layoutY="218.0" mnemonicParsing="false" onAction="#Pembayaran" prefHeight="25.0" prefWidth="59.0" style="-fx-background-color: #d6fcf2;" text="Bayar" />
-                  <ChoiceBox fx:id="cbID" layoutX="50.0" layoutY="67.0" prefWidth="150.0" style="-fx-background-color: #d6fcf2;" />
+                  <Button fx:id="btBayar" layoutX="137.0" layoutY="224.0" mnemonicParsing="false" onAction="#Pembayaran" prefHeight="25.0" prefWidth="59.0" style="-fx-background-color: #d6fcf2;" text="Bayar" />
+                  <ChoiceBox fx:id="cbID" layoutX="50.0" layoutY="42.0" prefWidth="150.0" style="-fx-background-color: #d6fcf2;" />
+                  <Button fx:id="btBuat" layoutX="52.0" layoutY="172.0" mnemonicParsing="false" onAction="#BuatPesan" prefHeight="25.0" prefWidth="56.0" style="-fx-background-color: #d6fcf2;" text="Buat" />
+                  <Button fx:id="btBatal" layoutX="139.0" layoutY="172.0" mnemonicParsing="false" onAction="#hapusPesanan" prefHeight="25.0" prefWidth="56.0" style="-fx-background-color: #d6fcf2;" text="Batal" />
+                  <Label fx:id="warn" alignment="CENTER" layoutX="57.0" layoutY="147.0" prefHeight="17.0" prefWidth="136.0" textFill="RED" />
                </children>
             </Pane>
          </children>
