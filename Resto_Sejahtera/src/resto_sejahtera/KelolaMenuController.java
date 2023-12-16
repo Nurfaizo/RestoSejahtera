@@ -88,7 +88,15 @@ public class KelolaMenuController implements Initializable{
 
     @FXML
     void gotoProsesMakanan(ActionEvent event) {
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ProsesPesanan.fxml"));
+            Parent root = loader.load();
+        
+            Stage stage = (Stage) btProsesMakanan.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch(IOException e) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     @FXML
@@ -131,7 +139,7 @@ public class KelolaMenuController implements Initializable{
     public ObservableList<Produk> getDataProduk() {
         ObservableList<Produk> produk = FXCollections.observableArrayList();
         Connection conn = DBHelper.getConnection();
-        String query = "SELECT * FROM `produk`";
+        String query = "SELECT * FROM `product`";
         Statement st;
         ResultSet rs;
         
@@ -141,7 +149,7 @@ public class KelolaMenuController implements Initializable{
             Produk temp;
             
             while(rs.next()) {
-                temp = new Produk(rs.getInt("ID"), rs.getString("nama"), rs.getString("deskripsi"), rs.getInt("harga"));
+                temp = new Produk(rs.getInt("id_product"), rs.getString("nama_product"), rs.getString("description"), rs.getInt("harga"));
                 produk.add(temp);
             }
         } catch (SQLException ex) {
@@ -175,7 +183,7 @@ public class KelolaMenuController implements Initializable{
     }
     
     private void insertRecord() {
-        String query = "INSERT INTO `produk` VALUES ('" + tfID.getText() + "','" + tfNama.getText() + "','" + tfDeskripsi.getText() + "','" + tfHarga.getText() + "')";
+        String query = "INSERT INTO `product` VALUES ('" + tfID.getText() + "','" + tfNama.getText() + "','" + tfDeskripsi.getText() + "','" + tfHarga.getText() + "')";
         update(query);
         showMenu();
         
@@ -186,7 +194,7 @@ public class KelolaMenuController implements Initializable{
     }
     
     private void updateRecord() {
-        String query = "UPDATE `produk` SET `nama`='" + tfNama.getText() + "',`deskripsi`='" + tfDeskripsi.getText() + "',`harga`='" + tfHarga.getText() + "' WHERE `ID`='" + tfID.getText() + "'";
+        String query = "UPDATE `product` SET `nama_product`='" + tfNama.getText() + "',`description`='" + tfDeskripsi.getText() + "',`harga`='" + tfHarga.getText() + "' WHERE `id_product`='" + tfID.getText() + "'";
         update(query);
         showMenu();
         
@@ -197,7 +205,7 @@ public class KelolaMenuController implements Initializable{
     }
     
     private void deleteRecord() {
-        String query = "DELETE FROM `produk` WHERE `ID`='" + tfID.getText() + "'";
+        String query = "DELETE FROM `product` WHERE `id_product`='" + tfID.getText() + "'";
         update(query);
         showMenu();
         
