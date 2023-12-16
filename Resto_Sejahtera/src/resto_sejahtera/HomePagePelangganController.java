@@ -12,9 +12,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class HomePagePelangganController {
-    @FXML
-    private Button btLogOut;
-    
+
     @FXML
     private Button btMenu;
 
@@ -23,7 +21,15 @@ public class HomePagePelangganController {
 
     @FXML
     void BuatPesanan(ActionEvent event) {
-
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("BuatPesanan.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) btMenu.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        } catch (IOException e) {
+        Logger.getLogger(HomePagePelangganController.class.getName()).log(Level.SEVERE, null, e);
+        System.out.println("Failed to load " + "BuatPesanan.fxml");
+        }
     }
 
     @FXML
@@ -38,17 +44,5 @@ public class HomePagePelangganController {
         System.out.println("Failed to load " + "LihatMenu.fxml");
         }
     }
-    
-    @FXML
-    void gotoLogin(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
-            Parent root = loader.load();
-            
-            Stage stage = (Stage) btLogOut.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch(IOException e) {
-            Logger.getLogger(HomePagePelangganController.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
+
 }
