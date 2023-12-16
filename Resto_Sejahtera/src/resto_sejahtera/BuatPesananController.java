@@ -22,13 +22,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import static resto_sejahtera.LoginController.usename;
 
@@ -91,7 +94,36 @@ public class BuatPesananController implements Initializable{
     
     @FXML
     void Pembayaran(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi Pembayaran");
+        alert.setHeaderText("Apakah Anda yakin ingin melakukan pembayaran?");
+         alert.setContentText("Total Pembayaran: " + getTotal() + " IDR");
+        alert.initModality(Modality.APPLICATION_MODAL);
 
+        ButtonType buttonTypeOK = new ButtonType("OK");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel");
+        alert.getButtonTypes().setAll(buttonTypeOK, buttonTypeCancel);
+
+        // Menunggu respon dari pengguna
+        alert.showAndWait().ifPresent(response -> {
+            if (response == buttonTypeOK) {
+                
+                insertpembayaran();
+                  try {
+                     FXMLLoader loader = new FXMLLoader(getClass().getResource("HomePagePelanggan.fxml"));
+                     Parent root = loader.load();
+
+                     Stage stage = (Stage) btHome.getScene().getWindow();
+                     stage.setScene(new Scene(root));
+                  } catch (IOException e) {
+                     Logger.getLogger(BuatPesananController.class.getName()).log(Level.SEVERE, null, e);
+                }
+                
+            } else {
+                
+                alert.close();
+            }
+        });
     }
 
     
@@ -349,6 +381,40 @@ public String getUsermp(){
         }
         return userMp;
 }
+
+public int getTotal() {
+    int total = 0;
+    Connection conn = DBHelper.getConnection();
+
+    if (conn != null) {
+        String querytotal = "SELECT\n" +
+                            "    pemesanan.Pemesanan_ID,\n" +
+                            "    SUM(product.harga * pemesanan_produk.Jumlah) AS Total_Harga\n" +
+                            "FROM pemesanan\n" +
+                            "\n" +
+                            "JOIN pemesanan_produk ON pemesanan.Pemesanan_ID = pemesanan_produk.Pemesanan_ID\n" +
+                            "JOIN product ON pemesanan_produk.id_product = product.id_product\n" +
+                            "\n" +
+                            "WHERE\n" +
+                            "pemesanan.Pemesanan_ID = (SELECT MAX(pemesanan.Pemesanan_ID) FROM pemesanan)";
+
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(querytotal)) {
+
+            if (resultSet.next()) {
+                total = resultSet.getInt("Total_Harga");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
+        
+    }
+
+    return total;
+}
+
+
  
 private void insertPesan() {
     String query = "INSERT INTO `pemesanan`(`Tanggal`, `Status`, `id_pengguna`) VALUES (?, ?, ?)";
@@ -416,7 +482,8 @@ private void deletepemesanan() {
 }
 
 private void insertpembayaran(){
-    String query = "INSERT INTO `pembayaran`( `MetodePembayaran`, `Tanggal`, `JumlahPembayaran`, `Pemesanan_ID`) VALUES (?,?,'?','?')";
+    String query = "INSERT INTO `pembayaran`( `MetodePembayaran`, `Tanggal`, `JumlahPembayaran`, `Pemesanan_ID`) VALUES (?,?,?,?)";
+    
     Connection conn = DBHelper.getConnection();
     PreparedStatement pst;
     pemesanID(getUserId());
@@ -428,8 +495,10 @@ private void insertpembayaran(){
             pst=conn.prepareStatement(query);
             pst.setString(1, getUsermp());
             pst.setDate(2, sqlDate);
+            pst.setInt(3, getTotal());
+            pst.setInt(4,  pemesananid);
             
-            
+            pst.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(BuatPesananController.class.getName()).log(Level.SEVERE, null, ex);
         }
