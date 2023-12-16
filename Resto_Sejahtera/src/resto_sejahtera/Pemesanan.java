@@ -11,41 +11,57 @@ import java.time.LocalDate;
  * @author Farhan Dzaky Aldias
  */
 public class Pemesanan {
-    private int ID;
-    private LocalDate tanggal;
-    private boolean statusPemesanan;
+    private int Pemesanan_ID;
+    private String Nama_Pelanggan;
+    private LocalDate Tanggal;
+    private int Total_Harga;
+    private String Status;
 
-    public Pemesanan(int ID, LocalDate tanggal, boolean statusPemesanan) {
-        this.ID = ID;
-        this.tanggal = tanggal;
-        this.statusPemesanan = statusPemesanan;
+    public Pemesanan(int Pemesanan_ID, String Nama_Pelanggan, LocalDate Tanggal, int Total_Harga, String Status) {
+        this.Pemesanan_ID = Pemesanan_ID;
+        this.Nama_Pelanggan = Nama_Pelanggan;
+        this.Tanggal = Tanggal;
+        this.Total_Harga = Total_Harga;
+        this.Status = Status;
     }
 
-    public int getID() {
-        return ID;
+    public int getPemesanan_ID() {
+        return Pemesanan_ID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setPemesanan_ID(int Pemesanan_ID) {
+        this.Pemesanan_ID = Pemesanan_ID;
+    }
+
+    public String getNama_Pelanggan() {
+        return Nama_Pelanggan;
+    }
+
+    public void setNama_Pelanggan(String Nama_Pelanggan) {
+        this.Nama_Pelanggan = Nama_Pelanggan;
     }
 
     public LocalDate getTanggal() {
-        return tanggal;
+        return Tanggal;
     }
 
-    public void setTanggal(LocalDate tanggal) {
-        this.tanggal = tanggal;
+    public void setTanggal(LocalDate Tanggal) {
+        this.Tanggal = Tanggal;
     }
 
-    public boolean isStatusPemesanan() {
-        return statusPemesanan;
+    public int getTotal_Harga() {
+        return Total_Harga;
     }
 
-    public void setStatusPemesanan(boolean statusPemesanan) {
-        this.statusPemesanan = statusPemesanan;
+    public void setTotal_Harga(int Total_Harga) {
+        this.Total_Harga = Total_Harga;
     }
-    
-    public int hitungTotal() {
-        return 0;
+
+    public String isStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
 }
